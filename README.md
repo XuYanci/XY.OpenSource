@@ -83,3 +83,21 @@ JS端维护一个MessageQueue，然后OC通过fetchQueue方式，获取消息队
 **OC调用JS**
 
 通过HandleMessageFromObjc，处理完成后，数据以及回调通过messageQueue的方式 (JS调用OC)
+
+
+
+### 卡顿检测
+
+**原理**
+
+因为kCFRunLoopBeforeSources-> kCFRunLoopBeforeWaiting 这期间处理用户交互，还有就是kCFRunLoopAfterWaiting 出现两次也可以认为卡顿；
+通过创建子线程，监听主线程状态变更判断是否卡顿；
+
+**步骤**
+
+1. 注册ObserverCallback
+
+2. 创建一个信号量，当状态改变的时候，Signal信号量
+
+3. 创建一个子线程，设置信号量等待超时（50ms)，如果超时了（代表主线程状态保持一段长时间不变），然后判断当前是否是kCFRunLoopBeforeSources或者kCFRunLoopAfterWaiting，连续5次代表卡断
+
