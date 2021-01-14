@@ -5,6 +5,10 @@
 * libdispatch
 * objc4
 * runloop
+* SDWebImage
+* MJRefresh
+* AFNetwork
+* FishHook 
 
 
 ### WebViewJavaScriptBridge
